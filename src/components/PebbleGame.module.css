@@ -1,0 +1,58 @@
+.game {
+  position: relative;
+}
+
+.card {
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  background: rgba(11, 16, 32, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-md);
+  display: grid;
+  gap: 14px;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.count {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.secret {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background: rgba(109, 40, 217, 0.15);
+  border: 1px solid rgba(109, 40, 217, 0.35);
+  display: grid;
+  gap: 12px;
+}
+
+.secretTitle {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.secretText {
+  margin: 0;
+  color: rgba(229, 231, 235, 0.82);
+}
+
+.pebbleFive {
+  top: 14%;
+  left: 18%;
+}
+
+@media (max-width: 720px) {
+  .pebbleFive {
+    top: 6%;
+    left: 10%;
+  }
+}

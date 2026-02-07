@@ -1,0 +1,444 @@
+.wrap {
+  position: relative;
+  padding: 82px 0 28px;
+  display: grid;
+  gap: 72px;
+}
+
+.header {
+  display: grid;
+  gap: 12px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: clamp(2rem, 1.2rem + 2.5vw, 3.35rem);
+  max-width: 880px;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.header p {
+  margin: 0;
+  max-width: 760px;
+  color: rgba(229, 231, 235, 0.86);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.sceneOne {
+  padding: 0;
+}
+
+.sceneInner {
+  display: grid;
+  gap: 18px;
+}
+
+.sceneInner h3 {
+  margin: 0;
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem);
+}
+
+.mosaicGrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: 86px;
+  gap: 14px;
+}
+
+.mosaicCard {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-lg);
+  padding: 10px;
+  background: linear-gradient(140deg, rgba(13, 18, 34, 0.92), rgba(22, 30, 52, 0.85));
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+  cursor: pointer;
+  animation: revealCard 650ms ease both;
+  animation-delay: var(--delay, 0ms);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.mosaicCard:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow: 0 22px 38px rgba(8, 12, 22, 0.52);
+}
+
+.mosaicCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  background: rgba(7, 10, 22, 0.92);
+}
+
+.mosaicCard span {
+  font-size: 0.75rem;
+  color: rgba(245, 241, 232, 0.86);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.mosaicCard:nth-child(8n + 1) {
+  grid-column: span 4;
+  grid-row: span 3;
+}
+
+.mosaicCard:nth-child(8n + 2) {
+  grid-column: span 4;
+  grid-row: span 2;
+}
+
+.mosaicCard:nth-child(8n + 3) {
+  grid-column: span 4;
+  grid-row: span 4;
+}
+
+.mosaicCard:nth-child(8n + 4) {
+  grid-column: span 3;
+  grid-row: span 2;
+}
+
+.mosaicCard:nth-child(8n + 5) {
+  grid-column: span 5;
+  grid-row: span 3;
+}
+
+.mosaicCard:nth-child(8n + 6) {
+  grid-column: span 4;
+  grid-row: span 2;
+}
+
+.mosaicCard:nth-child(8n + 7) {
+  grid-column: span 6;
+  grid-row: span 3;
+}
+
+.mosaicCard:nth-child(8n + 8) {
+  grid-column: span 3;
+  grid-row: span 2;
+}
+
+.sceneTwo {
+  padding: 16px 0;
+  display: grid;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.ribbon {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: ribbonMove 34s linear infinite;
+  padding-right: 12px;
+}
+
+.reverse {
+  animation-direction: reverse;
+  animation-duration: 38s;
+}
+
+.ribbonCard {
+  width: clamp(150px, 16vw, 280px);
+  min-height: 130px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  background: rgba(9, 14, 26, 0.84);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.ribbonCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(187, 136, 238, 0.55);
+}
+
+.ribbonCard img {
+  width: 100%;
+  height: auto;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: rgba(6, 10, 20, 0.95);
+}
+
+.sceneThree {
+  padding: 20px 0 8px;
+}
+
+.sceneInnerThree {
+  display: grid;
+  grid-template-columns: minmax(320px, 540px) minmax(240px, 1fr);
+  align-items: center;
+  gap: 22px;
+}
+
+.spotlightBox {
+  display: grid;
+  gap: 10px;
+}
+
+.spotlightBox h3 {
+  margin: 0;
+  font-size: clamp(1.2rem, 1rem + 1vw, 2rem);
+}
+
+.spotlightBox p {
+  margin: 0;
+  color: rgba(229, 231, 235, 0.8);
+}
+
+.spotlightCard {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-xl);
+  padding: 12px;
+  background: linear-gradient(145deg, rgba(11, 16, 32, 0.94), rgba(25, 33, 58, 0.86));
+  box-shadow: var(--shadow-lg);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.spotlightCard:hover {
+  transform: translateY(-5px);
+  border-color: rgba(34, 211, 238, 0.52);
+}
+
+.spotlightCard img {
+  width: 100%;
+  height: auto;
+  max-height: 62vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  background: rgba(6, 10, 20, 0.94);
+}
+
+.spotlightCard span {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.86rem;
+  color: var(--warm);
+}
+
+.placeholder {
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(13, 18, 34, 0.7);
+  color: rgba(229, 231, 235, 0.86);
+  padding: 18px;
+}
+
+.orbitShell {
+  width: 100%;
+  height: clamp(320px, 44vw, 520px);
+  display: grid;
+  place-items: center;
+}
+
+.orbitRing {
+  position: relative;
+  width: min(84vw, 430px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: 1px dashed rgba(187, 136, 238, 0.45);
+  animation: orbitSpin 22s linear infinite;
+}
+
+.orbitThumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(82px, 9vw, 118px);
+  aspect-ratio: 1 / 1;
+  transform: rotate(var(--angle)) translate(180px) rotate(calc(-1 * var(--angle)));
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 15, 28, 0.9);
+  padding: 6px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.orbitThumb:hover {
+  transform: rotate(var(--angle)) translate(180px) scale(1.08) rotate(calc(-1 * var(--angle)));
+  border-color: rgba(34, 211, 238, 0.5);
+}
+
+.orbitThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  background: rgba(6, 10, 20, 0.94);
+}
+
+.error {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  background: rgba(127, 29, 29, 0.24);
+}
+
+.pebbleTwo {
+  top: 18%;
+  right: 8%;
+}
+
+.pebbleThree {
+  bottom: 14%;
+  left: 8%;
+}
+
+@keyframes revealCard {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ribbonMove {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1024px) {
+  .mosaicGrid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .mosaicCard:nth-child(8n + 1),
+  .mosaicCard:nth-child(8n + 2),
+  .mosaicCard:nth-child(8n + 3),
+  .mosaicCard:nth-child(8n + 4),
+  .mosaicCard:nth-child(8n + 5),
+  .mosaicCard:nth-child(8n + 6),
+  .mosaicCard:nth-child(8n + 7),
+  .mosaicCard:nth-child(8n + 8) {
+    grid-column: span 4;
+    grid-row: span 2;
+  }
+
+  .sceneInnerThree {
+    grid-template-columns: 1fr;
+  }
+
+  .orbitShell {
+    height: 360px;
+  }
+
+  .orbitThumb {
+    transform: rotate(var(--angle)) translate(136px) rotate(calc(-1 * var(--angle)));
+  }
+
+  .orbitThumb:hover {
+    transform: rotate(var(--angle)) translate(136px) scale(1.06) rotate(calc(-1 * var(--angle)));
+  }
+}
+
+@media (max-width: 720px) {
+  .wrap {
+    gap: 46px;
+    padding-top: 56px;
+  }
+
+  .mosaicGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 170px;
+  }
+
+  .mosaicCard:nth-child(8n + 1),
+  .mosaicCard:nth-child(8n + 2),
+  .mosaicCard:nth-child(8n + 3),
+  .mosaicCard:nth-child(8n + 4),
+  .mosaicCard:nth-child(8n + 5),
+  .mosaicCard:nth-child(8n + 6),
+  .mosaicCard:nth-child(8n + 7),
+  .mosaicCard:nth-child(8n + 8) {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .ribbonCard {
+    width: min(62vw, 240px);
+  }
+
+  .spotlightCard img {
+    max-height: 48vh;
+  }
+
+  .orbitRing {
+    width: min(88vw, 320px);
+  }
+
+  .orbitThumb {
+    width: 76px;
+    transform: rotate(var(--angle)) translate(110px) rotate(calc(-1 * var(--angle)));
+  }
+
+  .orbitThumb:hover {
+    transform: rotate(var(--angle)) translate(110px) scale(1.04) rotate(calc(-1 * var(--angle)));
+  }
+
+  .pebbleTwo {
+    top: 24%;
+    right: 5%;
+  }
+
+  .pebbleThree {
+    bottom: 8%;
+    left: 4%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mosaicCard,
+  .ribbon,
+  .orbitRing {
+    animation: none;
+  }
+
+  .mosaicCard,
+  .ribbonCard,
+  .spotlightCard,
+  .orbitThumb {
+    transition: none;
+  }
+}

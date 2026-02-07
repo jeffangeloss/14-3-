@@ -1,0 +1,87 @@
+.music {
+  position: relative;
+}
+
+.embedWrap {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-md);
+}
+
+.embedWrap iframe {
+  width: 100%;
+  height: 352px;
+  border: none;
+}
+
+.player {
+  margin-top: 24px;
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  background: rgba(11, 16, 32, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  gap: 18px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.trackInfo {
+  font-weight: 600;
+  color: var(--warm);
+}
+
+.trackList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.trackButton {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  transition: border 0.2s ease, transform 0.2s ease;
+}
+
+.trackButton:hover {
+  border-color: rgba(34, 211, 238, 0.4);
+  transform: translateY(-2px);
+}
+
+.active {
+  border-color: rgba(244, 114, 182, 0.6);
+  color: var(--accent);
+}
+
+.pebbleSix {
+  top: 22%;
+  right: 14%;
+}
+
+@media (max-width: 720px) {
+  .embedWrap iframe {
+    height: 280px;
+  }
+
+  .pebbleSix {
+    top: 10%;
+    right: 8%;
+  }
+}

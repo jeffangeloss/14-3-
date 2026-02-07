@@ -1,0 +1,86 @@
+.timeline {
+  position: relative;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 24px;
+  position: relative;
+}
+
+.list::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.item {
+  position: relative;
+  padding-left: 56px;
+}
+
+.dot {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--secondary);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.7);
+}
+
+.card {
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-sm);
+}
+
+.date {
+  font-size: 0.85rem;
+  color: rgba(229, 231, 235, 0.7);
+  margin-bottom: 6px;
+}
+
+.title {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+}
+
+.text {
+  margin: 0;
+  color: rgba(229, 231, 235, 0.85);
+}
+
+.pebbleFour {
+  top: 20%;
+  right: 16%;
+}
+
+@media (max-width: 720px) {
+  .list::before {
+    left: 12px;
+  }
+
+  .item {
+    padding-left: 40px;
+  }
+
+  .dot {
+    left: 4px;
+  }
+
+  .pebbleFour {
+    top: 8%;
+    right: 8%;
+  }
+}

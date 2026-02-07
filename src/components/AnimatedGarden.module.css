@@ -1,0 +1,220 @@
+.decor {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glowLayer {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(34, 211, 238, 0.14), transparent 42%),
+    radial-gradient(circle at 80% 20%, rgba(187, 136, 238, 0.15), transparent 45%),
+    radial-gradient(circle at 58% 80%, rgba(244, 114, 182, 0.14), transparent 40%);
+  filter: blur(28px);
+  animation: glowPulse 12s ease-in-out infinite alternate;
+}
+
+.icon {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.heartsLayer,
+.birdsLayer,
+.catsLayer,
+.flowersLayer {
+  position: absolute;
+  inset: 0;
+}
+
+.heart {
+  position: absolute;
+  left: var(--left);
+  bottom: -8%;
+  width: var(--size);
+  opacity: 0;
+  filter: drop-shadow(0 8px 12px rgba(12, 16, 30, 0.42));
+  animation: heartFloat var(--duration) linear var(--delay) infinite;
+}
+
+.bird {
+  position: absolute;
+  top: var(--top);
+  left: -16%;
+  width: var(--size);
+  opacity: 0.95;
+  filter: drop-shadow(0 7px 10px rgba(10, 14, 26, 0.45));
+  animation: birdFlight var(--duration) linear var(--delay) infinite;
+}
+
+.wing {
+  transform-origin: 57px 49px;
+  animation: flap 0.45s ease-in-out infinite alternate;
+}
+
+.cat {
+  position: absolute;
+  left: var(--start-left);
+  bottom: calc(100% - var(--bottom));
+  width: var(--size);
+  opacity: 0.9;
+  filter: drop-shadow(0 12px 14px rgba(7, 10, 18, 0.5));
+  animation: catWalk var(--duration) linear var(--delay) infinite;
+}
+
+.flower {
+  position: absolute;
+  left: var(--left);
+  top: var(--top);
+  width: var(--size);
+  opacity: 0.85;
+  filter: drop-shadow(0 8px 14px rgba(7, 10, 18, 0.45));
+  animation: flowerSway var(--duration) ease-in-out var(--delay) infinite;
+}
+
+@keyframes heartFloat {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.75);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.7;
+  }
+
+  70% {
+    opacity: 0.86;
+  }
+
+  100% {
+    transform: translate3d(var(--drift), -118vh, 0) scale(1.05);
+    opacity: 0;
+  }
+}
+
+@keyframes birdFlight {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+  }
+
+  25% {
+    transform: translate3d(34vw, -14px, 0) scale(0.95);
+  }
+
+  50% {
+    transform: translate3d(68vw, 6px, 0) scale(1);
+  }
+
+  75% {
+    transform: translate3d(102vw, -10px, 0) scale(0.96);
+  }
+
+  100% {
+    transform: translate3d(135vw, 0, 0) scale(0.92);
+  }
+}
+
+@keyframes flap {
+  from {
+    transform: rotate(-10deg);
+  }
+
+  to {
+    transform: rotate(14deg);
+  }
+}
+
+@keyframes catWalk {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  18% {
+    transform: translate3d(22vw, -5px, 0);
+  }
+
+  42% {
+    transform: translate3d(54vw, 0, 0);
+  }
+
+  69% {
+    transform: translate3d(90vw, -6px, 0);
+  }
+
+  100% {
+    transform: translate3d(132vw, 0, 0);
+  }
+}
+
+@keyframes flowerSway {
+  0% {
+    transform: rotate(-7deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(7deg) translateY(-5px);
+  }
+
+  100% {
+    transform: rotate(-7deg) translateY(0);
+  }
+}
+
+@keyframes glowPulse {
+  from {
+    opacity: 0.48;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 0.78;
+    transform: scale(1.03);
+  }
+}
+
+@media (max-width: 900px) {
+  .cat {
+    width: calc(var(--size) * 0.84);
+  }
+
+  .bird {
+    width: calc(var(--size) * 0.88);
+  }
+
+  .flower {
+    width: calc(var(--size) * 0.82);
+  }
+}
+
+@media (max-width: 720px) {
+  .glowLayer {
+    filter: blur(20px);
+  }
+
+  .heart:nth-child(odd),
+  .flower:nth-child(even) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heart,
+  .bird,
+  .cat,
+  .flower,
+  .wing,
+  .glowLayer {
+    animation: none;
+  }
+
+  .heart,
+  .bird,
+  .cat,
+  .flower {
+    opacity: 0.55;
+  }
+}

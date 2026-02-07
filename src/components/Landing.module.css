@@ -1,0 +1,159 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 80px;
+}
+
+.heroInner {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 40px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  font-size: clamp(2.5rem, 2rem + 2.8vw, 4.2rem);
+  margin: 0;
+  line-height: 1.05;
+}
+
+.title span {
+  color: var(--lilac);
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  color: rgba(229, 231, 235, 0.78);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.enter {
+  position: relative;
+  overflow: hidden;
+}
+
+.enter::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(-100%);
+  animation: shine 2.8s infinite;
+}
+
+.kitty {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--secondary);
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+}
+
+.orbit {
+  position: relative;
+  height: 360px;
+  display: grid;
+  place-items: center;
+}
+
+.orbitRing {
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 50px rgba(34, 211, 238, 0.1);
+  position: relative;
+}
+
+.orbitGlow {
+  position: absolute;
+  inset: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(109, 40, 217, 0.5), transparent 70%);
+  filter: blur(2px);
+}
+
+.orbitBadge {
+  position: absolute;
+  top: 14%;
+  right: -10%;
+  background: rgba(187, 136, 238, 0.16);
+  border: 1px solid rgba(187, 136, 238, 0.35);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.orbitCard {
+  position: absolute;
+  bottom: 6%;
+  left: -8%;
+  padding: 16px 18px;
+  border-radius: var(--radius-lg);
+  background: rgba(11, 16, 32, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-sm);
+  max-width: 220px;
+  font-size: 0.9rem;
+}
+
+.pebbleOne {
+  top: 18%;
+  right: 14%;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-120%);
+  }
+  60% {
+    transform: translateX(120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@media (max-width: 900px) {
+  .heroInner {
+    grid-template-columns: 1fr;
+  }
+
+  .orbit {
+    height: 280px;
+  }
+
+  .orbitRing {
+    width: 240px;
+    height: 240px;
+  }
+
+  .orbitCard {
+    position: static;
+    margin-top: 16px;
+  }
+
+  .orbitBadge {
+    position: static;
+    margin-bottom: 12px;
+  }
+
+  .pebbleOne {
+    top: 12%;
+    right: 18%;
+  }
+}

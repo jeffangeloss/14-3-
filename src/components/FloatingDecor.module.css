@@ -1,0 +1,188 @@
+﻿.decor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.item {
+  position: absolute;
+  opacity: 0.85;
+  filter: drop-shadow(0 6px 12px rgba(11, 16, 32, 0.5));
+}
+
+.cat {
+  font-size: 2.1rem;
+  animation: catWalk 26s linear infinite;
+}
+
+.catTwo {
+  animation-delay: 6s;
+  top: 16%;
+  left: -15%;
+}
+
+.catOne {
+  animation-delay: 0s;
+  top: 78%;
+  left: -20%;
+}
+
+.catThree {
+  animation-delay: 12s;
+  top: 48%;
+  left: -25%;
+}
+
+.butterfly {
+  font-size: 1.6rem;
+  animation: flutter 10s ease-in-out infinite;
+}
+
+.butterflyOne {
+  top: 20%;
+  left: 12%;
+  animation-delay: 0s;
+}
+
+.butterflyTwo {
+  top: 60%;
+  left: 80%;
+  animation-delay: 2s;
+}
+
+.butterflyThree {
+  top: 35%;
+  left: 55%;
+  animation-delay: 4s;
+}
+
+.bird {
+  font-size: 1.5rem;
+  animation: fly 18s linear infinite;
+}
+
+.birdOne {
+  top: 8%;
+  left: -20%;
+  animation-delay: 1s;
+}
+
+.birdTwo {
+  top: 30%;
+  left: -30%;
+  animation-delay: 9s;
+}
+
+.flower {
+  font-size: 1.4rem;
+  animation: sway 6s ease-in-out infinite;
+}
+
+.flowerOne {
+  bottom: 10%;
+  left: 12%;
+}
+
+.flowerTwo {
+  bottom: 18%;
+  right: 8%;
+  animation-delay: 1s;
+}
+
+.flowerThree {
+  top: 12%;
+  right: 18%;
+  animation-delay: 2s;
+}
+
+.flowerFour {
+  top: 70%;
+  right: 28%;
+  animation-delay: 3s;
+}
+
+.flowerFive {
+  top: 45%;
+  left: 4%;
+  animation-delay: 4s;
+}
+
+@keyframes catWalk {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(35vw) translateY(-4px);
+  }
+  50% {
+    transform: translateX(70vw) translateY(0);
+  }
+  75% {
+    transform: translateX(105vw) translateY(-4px);
+  }
+  100% {
+    transform: translateX(140vw) translateY(0);
+  }
+}
+
+@keyframes flutter {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(24px, -18px) rotate(8deg);
+  }
+  100% {
+    transform: translate(-12px, 12px) rotate(-6deg);
+  }
+}
+
+@keyframes fly {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(70vw) translateY(-12px);
+  }
+  100% {
+    transform: translateX(140vw) translateY(0);
+  }
+}
+
+@keyframes sway {
+  0% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+  100% {
+    transform: rotate(-4deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .cat {
+    font-size: 1.7rem;
+  }
+
+  .butterfly {
+    font-size: 1.3rem;
+  }
+
+  .bird {
+    font-size: 1.2rem;
+  }
+
+  .flower {
+    font-size: 1.1rem;
+  }
+
+  .catThree,
+  .birdTwo,
+  .flowerFive {
+    display: none;
+  }
+}

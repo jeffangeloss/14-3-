@@ -1,0 +1,10 @@
+.footer {
+  padding: 40px 0 60px;
+  text-align: center;
+  color: rgba(229, 231, 235, 0.65);
+  font-size: 0.9rem;
+}
+
+.footer strong {
+  color: var(--warm);
+}

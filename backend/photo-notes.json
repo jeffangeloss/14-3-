@@ -1,0 +1,18 @@
+﻿{
+  "main/photo-0001.jpg": {
+    "collection": "main",
+    "theme": "general",
+    "title": "Titulo personalizado",
+    "caption": "Texto breve",
+    "note": "Nota para la lightbox",
+    "tags": ["recuerdo"]
+  },
+  "rui/photo-0101.jpg": {
+    "collection": "rui",
+    "theme": "rui",
+    "title": "Rui Kamishiro",
+    "caption": "Favorito de Gaby",
+    "note": "Coleccion especial",
+    "tags": ["personaje", "rui"]
+  }
+}
