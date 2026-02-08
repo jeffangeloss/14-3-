@@ -1,4 +1,48 @@
+import { useEffect, useMemo, useState } from 'react'
 import styles from './AnimatedGarden.module.css'
+
+const apiBase = import.meta.env.VITE_API_BASE_URL ?? ''
+const pageSize = 80
+const maxPages = 8
+
+const uniqueById = (list) => {
+  const seen = new Set()
+  const result = []
+
+  for (const item of list) {
+    if (seen.has(item.id)) continue
+    seen.add(item.id)
+    result.push(item)
+  }
+
+  return result
+}
+
+const buildPhotoDrift = (photos) =>
+  photos.map((photo, index) => {
+    const size = 72 + ((index * 13) % 52)
+    const left = 2 + ((index * 47.7) % 96)
+    const duration = 32 + ((index * 11) % 24)
+    const delay = -((index * 3.2) % duration)
+    const drift = (index % 2 === 0 ? 1 : -1) * (10 + ((index * 7) % 22))
+    const wobble = 4 + ((index * 5) % 8)
+    const opacity = (0.28 + ((index % 6) * 0.06)).toFixed(2)
+    const tilt = `${(index % 2 === 0 ? 1 : -1) * (3 + ((index * 3) % 8))}deg`
+
+    return {
+      ...photo,
+      style: {
+        '--left': `${left}%`,
+        '--size': `${size}px`,
+        '--duration': `${duration}s`,
+        '--delay': `${delay}s`,
+        '--drift': `${drift}vw`,
+        '--wobble': `${wobble}px`,
+        '--alpha': opacity,
+        '--tilt': tilt
+      }
+    }
+  })
 
 const cats = [
   { left: '-22%', y: '86%', size: 118, duration: '32s', delay: '0s' },
@@ -91,9 +135,68 @@ function FlowerIcon() {
 }
 
 export default function AnimatedGarden() {
+  const [photos, setPhotos] = useState([])
+
+  useEffect(() => {
+    let cancelled = false
+
+    const loadPhotos = async () => {
+      try {
+        let cursor = 0
+        let page = 0
+        const merged = []
+
+        while (page < maxPages) {
+          const query = new URLSearchParams({
+            collection: 'all',
+            limit: String(pageSize),
+            cursor: String(cursor)
+          })
+
+          const response = await fetch(`${apiBase}/api/photos?${query.toString()}`)
+          if (!response.ok) break
+
+          const payload = await response.json()
+          const received = Array.isArray(payload.items) ? payload.items : []
+          if (received.length === 0) break
+
+          merged.push(...received)
+
+          if (payload.nextCursor === null || payload.nextCursor === undefined) break
+          if (Number(payload.nextCursor) === cursor) break
+
+          cursor = Number(payload.nextCursor)
+          page += 1
+        }
+
+        if (cancelled) return
+        setPhotos(uniqueById(merged))
+      } catch {
+        if (!cancelled) setPhotos([])
+      }
+    }
+
+    loadPhotos()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const driftingPhotos = useMemo(() => buildPhotoDrift(photos), [photos])
+
   return (
     <div className={styles.decor} aria-hidden="true">
       <div className={styles.glowLayer} />
+
+      <div className={styles.photoLayer}>
+        {driftingPhotos.map((photo) => (
+          <span key={`ambient-${photo.id}`} className={styles.photoPetal} style={photo.style}>
+            <span className={styles.photoFrame}>
+              <img src={photo.src} alt="" loading="lazy" decoding="async" />
+            </span>
+          </span>
+        ))}
+      </div>
 
       <div className={styles.heartsLayer}>
         {hearts.map((heart, index) => (

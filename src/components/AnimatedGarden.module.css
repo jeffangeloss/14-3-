@@ -15,6 +15,45 @@
     radial-gradient(circle at 58% 80%, rgba(244, 114, 182, 0.14), transparent 40%);
   filter: blur(28px);
   animation: glowPulse 12s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+.photoLayer {
+  position: absolute;
+  inset: -18% 0;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.photoPetal {
+  position: absolute;
+  left: var(--left);
+  bottom: -34vh;
+  width: var(--size);
+  opacity: 0;
+  filter: drop-shadow(0 10px 16px rgba(7, 10, 18, 0.45));
+  will-change: transform, opacity;
+  animation: photoRise var(--duration) linear var(--delay) infinite;
+}
+
+.photoFrame {
+  display: block;
+  padding: 4px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: linear-gradient(150deg, rgba(255, 239, 248, 0.38), rgba(145, 206, 255, 0.22));
+  box-shadow: 0 12px 18px rgba(7, 10, 18, 0.34);
+  opacity: var(--alpha);
+  animation: photoWobble calc(var(--duration) * 0.26) ease-in-out var(--delay) infinite;
+}
+
+.photoFrame img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  filter: saturate(1.04) contrast(1.03);
 }
 
 .icon {
@@ -29,6 +68,7 @@
 .flowersLayer {
   position: absolute;
   inset: 0;
+  z-index: 3;
 }
 
 .heart {
@@ -93,6 +133,42 @@
   100% {
     transform: translate3d(var(--drift), -118vh, 0) scale(1.05);
     opacity: 0;
+  }
+}
+
+@keyframes photoRise {
+  0% {
+    transform: translate3d(0, 126vh, 0) rotate(calc(var(--tilt) * -1)) scale(0.78);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: var(--alpha);
+  }
+
+  54% {
+    transform: translate3d(var(--drift), 16vh, 0) rotate(var(--tilt)) scale(1);
+    opacity: calc(var(--alpha) + 0.08);
+  }
+
+  100% {
+    transform: translate3d(calc(var(--drift) * -0.55), -136vh, 0) rotate(calc(var(--tilt) * -0.8))
+      scale(0.86);
+    opacity: 0;
+  }
+}
+
+@keyframes photoWobble {
+  0% {
+    transform: translateY(0) rotate(calc(var(--tilt) * -1));
+  }
+
+  50% {
+    transform: translateY(calc(var(--wobble) * -1)) rotate(var(--tilt));
+  }
+
+  100% {
+    transform: translateY(0) rotate(calc(var(--tilt) * -1));
   }
 }
 
@@ -177,6 +253,10 @@
 }
 
 @media (max-width: 900px) {
+  .photoPetal {
+    width: calc(var(--size) * 0.88);
+  }
+
   .cat {
     width: calc(var(--size) * 0.84);
   }
@@ -195,13 +275,25 @@
     filter: blur(20px);
   }
 
+  .photoPetal:nth-child(odd) {
+    display: none;
+  }
+
   .heart:nth-child(odd),
   .flower:nth-child(even) {
     display: none;
   }
 }
 
+@media (max-width: 520px) {
+  .photoPetal:nth-child(3n + 1) {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .photoPetal,
+  .photoFrame,
   .heart,
   .bird,
   .cat,
@@ -216,5 +308,9 @@
   .cat,
   .flower {
     opacity: 0.55;
+  }
+
+  .photoPetal {
+    display: none;
   }
 }
