@@ -1,8 +1,8 @@
 .wrap {
   position: relative;
-  padding: 82px 0 32px;
+  padding: 68px 0 0;
   display: grid;
-  gap: 72px;
+  gap: 62px;
 }
 
 .header {
@@ -22,17 +22,6 @@
   margin: 0;
   max-width: 780px;
   color: rgba(229, 231, 235, 0.88);
-}
-
-.counter {
-  width: fit-content;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(34, 211, 238, 0.45);
-  color: var(--secondary);
-  background: rgba(34, 211, 238, 0.12);
-  font-size: 0.82rem;
-  font-weight: 600;
 }
 
 .actions {
@@ -58,32 +47,21 @@
 
 .mosaicGrid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-auto-rows: 86px;
-  gap: 14px;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-auto-rows: 118px;
+  gap: 12px;
 }
 
 .mosaicCard {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-lg);
-  padding: 10px;
+  padding: 8px;
   background: linear-gradient(140deg, rgba(13, 18, 34, 0.92), rgba(22, 30, 52, 0.85));
   box-shadow: var(--shadow-sm);
-  text-align: left;
   overflow: hidden;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: 8px;
-  cursor: pointer;
+  display: block;
   animation: revealCard 650ms ease both;
   animation-delay: var(--delay, 0ms);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.mosaicCard:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: rgba(34, 211, 238, 0.5);
-  box-shadow: 0 22px 38px rgba(8, 12, 22, 0.52);
 }
 
 .mosaicCard img {
@@ -94,52 +72,44 @@
   background: rgba(7, 10, 22, 0.92);
 }
 
-.mosaicCard span {
-  font-size: 0.75rem;
-  color: rgba(245, 241, 232, 0.86);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
 .mosaicCard:nth-child(8n + 1) {
-  grid-column: span 4;
-  grid-row: span 3;
+  grid-column: span 1;
+  grid-row: span 1;
 }
 
 .mosaicCard:nth-child(8n + 2) {
-  grid-column: span 4;
-  grid-row: span 2;
+  grid-column: span 1;
+  grid-row: span 1;
 }
 
 .mosaicCard:nth-child(8n + 3) {
-  grid-column: span 4;
-  grid-row: span 4;
+  grid-column: span 1;
+  grid-row: span 1;
 }
 
 .mosaicCard:nth-child(8n + 4) {
-  grid-column: span 3;
-  grid-row: span 2;
+  grid-column: span 1;
+  grid-row: span 1;
 }
 
 .mosaicCard:nth-child(8n + 5) {
-  grid-column: span 5;
-  grid-row: span 3;
+  grid-column: span 1;
+  grid-row: span 1;
 }
 
 .mosaicCard:nth-child(8n + 6) {
-  grid-column: span 4;
-  grid-row: span 2;
+  grid-column: span 1;
+  grid-row: span 1;
 }
 
 .mosaicCard:nth-child(8n + 7) {
-  grid-column: span 6;
-  grid-row: span 3;
+  grid-column: span 1;
+  grid-row: span 1;
 }
 
 .mosaicCard:nth-child(8n + 8) {
-  grid-column: span 3;
-  grid-row: span 2;
+  grid-column: span 1;
+  grid-row: span 1;
 }
 
 .sceneTwo {
@@ -175,26 +145,19 @@
 }
 
 .ribbonCard {
-  width: clamp(150px, 16vw, 280px);
-  min-height: 130px;
+  width: clamp(144px, 15vw, 226px);
+  min-height: 0;
+  aspect-ratio: 4 / 3;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-md);
   padding: 8px;
   background: rgba(9, 14, 26, 0.9);
   box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  transition: transform 0.25s ease, border-color 0.25s ease;
-}
-
-.ribbonCard:hover {
-  transform: translateY(-4px);
-  border-color: rgba(187, 136, 238, 0.55);
 }
 
 .ribbonCard img {
   width: 100%;
-  height: auto;
-  max-height: 180px;
+  height: 100%;
   object-fit: contain;
   border-radius: var(--radius-sm);
   background: rgba(6, 10, 20, 0.95);
@@ -206,14 +169,16 @@
 
 .sceneInnerThree {
   display: grid;
-  grid-template-columns: minmax(320px, 540px) minmax(240px, 1fr);
+  grid-template-columns: minmax(300px, 420px) minmax(260px, 1fr);
   align-items: center;
-  gap: 22px;
+  justify-content: space-between;
+  gap: 24px;
 }
 
 .spotlightBox {
   display: grid;
   gap: 10px;
+  width: min(100%, 420px);
 }
 
 .spotlightBox h3 {
@@ -227,36 +192,23 @@
 }
 
 .spotlightCard {
-  width: 100%;
+  width: min(100%, 392px);
+  aspect-ratio: 1 / 1;
+  height: auto;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--radius-xl);
   padding: 12px;
   background: linear-gradient(145deg, rgba(11, 16, 32, 0.94), rgba(25, 33, 58, 0.86));
   box-shadow: var(--shadow-lg);
-  text-align: left;
-  cursor: pointer;
-  transition: border-color 0.25s ease, transform 0.25s ease;
-}
-
-.spotlightCard:hover {
-  transform: translateY(-5px);
-  border-color: rgba(34, 211, 238, 0.52);
+  display: grid;
 }
 
 .spotlightCard img {
   width: 100%;
-  height: auto;
-  max-height: 62vh;
+  height: 100%;
   object-fit: contain;
   border-radius: var(--radius-lg);
   background: rgba(6, 10, 20, 0.94);
-}
-
-.spotlightCard span {
-  display: block;
-  margin-top: 8px;
-  font-size: 0.86rem;
-  color: var(--warm);
 }
 
 .placeholder {
@@ -295,13 +247,6 @@
   background: rgba(10, 15, 28, 0.9);
   padding: 6px;
   box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.orbitThumb:hover {
-  transform: rotate(var(--angle)) translate(180px) scale(1.08) rotate(calc(-1 * var(--angle)));
-  border-color: rgba(34, 211, 238, 0.5);
 }
 
 .orbitThumb img {
@@ -313,7 +258,8 @@
 }
 
 .sceneFour {
-  padding: 24px 0 16px;
+  padding: 18px 0 0;
+  overflow: hidden;
 }
 
 .sceneInnerHeart {
@@ -348,10 +294,11 @@
 
 .heartStage {
   position: relative;
-  width: min(98vw, 1240px);
+  width: min(96vw, 1080px);
   margin: 0 auto;
-  min-height: clamp(620px, 76vw, 980px);
+  min-height: clamp(460px, 60vw, 760px);
   aspect-ratio: 10 / 9;
+  overflow: hidden;
 }
 
 .heartGlow {
@@ -392,8 +339,6 @@
   transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) rotate(var(--tilt)) scale(0.95);
   animation: heartBreath var(--duration, 5.2s) ease-in-out infinite;
   animation-delay: var(--delay);
-  cursor: pointer;
-  transition: border-color 0.22s ease, box-shadow 0.22s ease;
 }
 
 .heartNode::after {
@@ -406,11 +351,6 @@
   animation: heartSpark 3.8s ease-in-out infinite;
   animation-delay: calc(var(--delay) / 2);
   pointer-events: none;
-}
-
-.heartNode:hover {
-  border-color: rgba(244, 114, 182, 0.72);
-  box-shadow: 0 18px 32px rgba(12, 16, 30, 0.58);
 }
 
 .heartNode img {
@@ -429,14 +369,26 @@
   background: rgba(127, 29, 29, 0.24);
 }
 
-.pebbleTwo {
-  top: 18%;
-  right: 8%;
+.energySave .mosaicCard,
+.energySave .ribbonTrack,
+.energySave .orbitRing,
+.energySave .heartNode,
+.energySave .heartNode::after,
+.energySave .heartGlow,
+.energySave .heartHalo {
+  animation: none;
 }
 
-.pebbleThree {
-  bottom: 14%;
-  left: 8%;
+.energySave .mosaicCard,
+.energySave .ribbonCard,
+.energySave .spotlightCard,
+.energySave .orbitThumb,
+.energySave .heartNode {
+  transition: none;
+}
+
+.energySave .ribbonTrack {
+  transform: none !important;
 }
 
 @keyframes revealCard {
@@ -515,8 +467,13 @@
 }
 
 @media (max-width: 1024px) {
+  .wrap {
+    gap: 54px;
+  }
+
   .mosaicGrid {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-auto-rows: 122px;
   }
 
   .mosaicCard:nth-child(8n + 1),
@@ -535,6 +492,15 @@
     grid-template-columns: 1fr;
   }
 
+  .spotlightBox {
+    width: min(100%, 420px);
+    justify-self: center;
+  }
+
+  .spotlightCard {
+    width: 100%;
+  }
+
   .orbitShell {
     height: 360px;
   }
@@ -543,12 +509,8 @@
     transform: rotate(var(--angle)) translate(136px) rotate(calc(-1 * var(--angle)));
   }
 
-  .orbitThumb:hover {
-    transform: rotate(var(--angle)) translate(136px) scale(1.06) rotate(calc(-1 * var(--angle)));
-  }
-
   .heartStage {
-    min-height: clamp(540px, 84vw, 860px);
+    min-height: clamp(420px, 74vw, 660px);
   }
 
   .heartNode {
@@ -558,13 +520,30 @@
 
 @media (max-width: 720px) {
   .wrap {
-    gap: 46px;
-    padding-top: 56px;
+    gap: 40px;
+    padding-top: 44px;
+  }
+
+  .header h2 {
+    font-size: clamp(1.55rem, 1.28rem + 2.6vw, 2.1rem);
+    line-height: 1.12;
+  }
+
+  .header p {
+    font-size: 0.96rem;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions .btn {
+    width: 100%;
   }
 
   .mosaicGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: 170px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 132px;
   }
 
   .mosaicCard:nth-child(8n + 1),
@@ -580,11 +559,15 @@
   }
 
   .ribbonCard {
-    width: min(62vw, 240px);
+    width: min(58vw, 200px);
+  }
+
+  .spotlightCard {
+    width: min(100%, 344px);
   }
 
   .spotlightCard img {
-    max-height: 48vh;
+    height: 100%;
   }
 
   .orbitRing {
@@ -596,12 +579,8 @@
     transform: rotate(var(--angle)) translate(110px) rotate(calc(-1 * var(--angle)));
   }
 
-  .orbitThumb:hover {
-    transform: rotate(var(--angle)) translate(110px) scale(1.04) rotate(calc(-1 * var(--angle)));
-  }
-
   .heartStage {
-    min-height: clamp(430px, 118vw, 740px);
+    min-height: clamp(360px, 95vw, 520px);
   }
 
   .heartNode {
@@ -614,14 +593,45 @@
     border-radius: 10px;
   }
 
-  .pebbleTwo {
-    top: 24%;
-    right: 5%;
+}
+
+@media (max-width: 520px) {
+  .mosaicGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 118px;
+    gap: 10px;
   }
 
-  .pebbleThree {
-    bottom: 8%;
-    left: 4%;
+  .ribbonViewport {
+    padding: 8px;
+  }
+
+  .ribbonCard {
+    width: min(70vw, 184px);
+  }
+
+  .orbitRing {
+    width: min(90vw, 286px);
+  }
+
+  .orbitThumb {
+    width: 66px;
+    transform: rotate(var(--angle)) translate(94px) rotate(calc(-1 * var(--angle)));
+  }
+
+  .heartStage {
+    min-height: clamp(320px, 90vw, 460px);
+  }
+
+  .heartNode {
+    width: calc(var(--size, 74px) * 0.62);
+  }
+}
+
+@media (max-width: 420px) {
+  .mosaicGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 124px;
   }
 }
 

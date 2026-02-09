@@ -1,22 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import styles from './AnimatedGarden.module.css'
-
-const apiBase = import.meta.env.VITE_API_BASE_URL ?? ''
-const pageSize = 80
-const maxPages = 8
-
-const uniqueById = (list) => {
-  const seen = new Set()
-  const result = []
-
-  for (const item of list) {
-    if (seen.has(item.id)) continue
-    seen.add(item.id)
-    result.push(item)
-  }
-
-  return result
-}
+import { usePhotoCatalog } from '../hooks/usePhotoCatalog'
 
 const buildPhotoDrift = (photos) =>
   photos.map((photo, index) => {
@@ -134,58 +118,28 @@ function FlowerIcon() {
   )
 }
 
-export default function AnimatedGarden() {
-  const [photos, setPhotos] = useState([])
+export default function AnimatedGarden({ energySaver = false }) {
+  const { photos } = usePhotoCatalog()
+  const shouldAnimate = !energySaver
 
-  useEffect(() => {
-    let cancelled = false
+  // Keep ambient decoration lightweight on low-power devices.
+  const ambientPhotos = useMemo(() => {
+    const target = shouldAnimate ? 48 : 0
+    if (target <= 0) return []
+    if (photos.length <= target) return photos
+    const step = photos.length / target
+    return Array.from({ length: target }, (_, index) => photos[Math.floor(index * step)]).filter(Boolean)
+  }, [photos, shouldAnimate])
 
-    const loadPhotos = async () => {
-      try {
-        let cursor = 0
-        let page = 0
-        const merged = []
+  const ambientHearts = useMemo(() => (shouldAnimate ? hearts : []), [shouldAnimate])
+  const ambientBirds = useMemo(() => (shouldAnimate ? birds : []), [shouldAnimate])
+  const ambientCats = useMemo(() => (shouldAnimate ? cats : []), [shouldAnimate])
+  const ambientFlowers = useMemo(() => (shouldAnimate ? flowers : []), [shouldAnimate])
 
-        while (page < maxPages) {
-          const query = new URLSearchParams({
-            collection: 'all',
-            limit: String(pageSize),
-            cursor: String(cursor)
-          })
-
-          const response = await fetch(`${apiBase}/api/photos?${query.toString()}`)
-          if (!response.ok) break
-
-          const payload = await response.json()
-          const received = Array.isArray(payload.items) ? payload.items : []
-          if (received.length === 0) break
-
-          merged.push(...received)
-
-          if (payload.nextCursor === null || payload.nextCursor === undefined) break
-          if (Number(payload.nextCursor) === cursor) break
-
-          cursor = Number(payload.nextCursor)
-          page += 1
-        }
-
-        if (cancelled) return
-        setPhotos(uniqueById(merged))
-      } catch {
-        if (!cancelled) setPhotos([])
-      }
-    }
-
-    loadPhotos()
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
-  const driftingPhotos = useMemo(() => buildPhotoDrift(photos), [photos])
+  const driftingPhotos = useMemo(() => buildPhotoDrift(ambientPhotos), [ambientPhotos])
 
   return (
-    <div className={styles.decor} aria-hidden="true">
+    <div className={`${styles.decor} ${energySaver ? styles.energySave : ''}`} aria-hidden="true">
       <div className={styles.glowLayer} />
 
       <div className={styles.photoLayer}>
@@ -199,7 +153,7 @@ export default function AnimatedGarden() {
       </div>
 
       <div className={styles.heartsLayer}>
-        {hearts.map((heart, index) => (
+        {ambientHearts.map((heart, index) => (
           <span
             key={`heart-${index + 1}`}
             className={styles.heart}
@@ -217,7 +171,7 @@ export default function AnimatedGarden() {
       </div>
 
       <div className={styles.birdsLayer}>
-        {birds.map((bird, index) => (
+        {ambientBirds.map((bird, index) => (
           <span
             key={`bird-${index + 1}`}
             className={styles.bird}
@@ -234,7 +188,7 @@ export default function AnimatedGarden() {
       </div>
 
       <div className={styles.catsLayer}>
-        {cats.map((cat, index) => (
+        {ambientCats.map((cat, index) => (
           <span
             key={`cat-${index + 1}`}
             className={styles.cat}
@@ -252,7 +206,7 @@ export default function AnimatedGarden() {
       </div>
 
       <div className={styles.flowersLayer}>
-        {flowers.map((flower, index) => (
+        {ambientFlowers.map((flower, index) => (
           <span
             key={`flower-${index + 1}`}
             className={styles.flower}

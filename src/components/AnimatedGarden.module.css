@@ -116,6 +116,30 @@
   animation: flowerSway var(--duration) ease-in-out var(--delay) infinite;
 }
 
+.energySave .photoLayer {
+  display: none;
+}
+
+.energySave .glowLayer,
+.energySave .heart,
+.energySave .bird,
+.energySave .cat,
+.energySave .flower,
+.energySave .wing {
+  animation: none;
+}
+
+.energySave .glowLayer {
+  opacity: 0.4;
+}
+
+.energySave .heartsLayer,
+.energySave .birdsLayer,
+.energySave .catsLayer,
+.energySave .flowersLayer {
+  opacity: 0.56;
+}
+
 @keyframes heartFloat {
   0% {
     transform: translate3d(0, 0, 0) scale(0.75);

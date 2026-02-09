@@ -1,60 +1,32 @@
-import { useState } from 'react'
-import { letterText } from '../data/letter'
-import useReveal from '../hooks/useReveal'
-import useTypewriter from '../hooks/useTypewriter'
-import Pebble from './Pebble'
-import styles from './Letter.module.css'
+﻿import styles from './Letter.module.css'
+
+const closingMessage = `PRECIOSA GABY, QUIERES SER MI SAN VALENTÍN? ¿Te gustaría que este 14 sea nuestro? 🌙💗
+Podríamos salir juntitos este 14 de febrero si es que puedes :')
+En todo caso, también podemos elegir otro día!
+
+Esta cita juntos si o si presentará:
+- Muchos abracitos <3
+- Infinitos momentos tomados de la manito :')
+- Lindas, hermosas, sentimentales flores!
+- Demasiados te quiero muchísimo preciosa
+- Un día de muchas risas y bonitos momentos juntos!`
 
 export default function Letter() {
-  const [response, setResponse] = useState('')
-  const [ref, isVisible] = useReveal()
-  const typedText = useTypewriter(letterText, 24, isVisible)
-
   return (
-    <section id="carta" className={`section ${styles.letter}`}>
+    <footer id="carta" className={styles.footerInvite} role="contentinfo">
       <div className="section-inner">
-        <div className="section-header">
+        <div className={`section-header ${styles.header}`}>
           <div>
-            <h2 className="section-title">Carta final</h2>
-            <p className="section-subtitle">
-              Un mensaje escrito con calma, carino y un poquito de magia.
-            </p>
+            <h2 className="section-title">Invitación</h2>
+            <p className="section-subtitle">Una propuesta hecha con todo mi cariño para ti.</p>
           </div>
-          <span className="pill">Typewriter</span>
+          <span className="pill">Para Gaby</span>
         </div>
-        <div ref={ref} className={`${styles.card} reveal ${isVisible ? 'reveal-visible' : ''}`}>
-          <p className={styles.text} aria-live="polite">
-            {typedText}
-          </p>
-        </div>
-        <div className={styles.cta}>
-          <button
-            type="button"
-            className="btn"
-            onClick={() => setResponse('Si, me encantaria. Prometo muchos abrazos y musica.')}
-          >
-            Si, me encantaria
-          </button>
-          <button
-            type="button"
-            className="btn ghost"
-            onClick={() =>
-              setResponse('Gracias por tu sinceridad. Seguimos con calma, igual de bonito.')
-            }
-          >
-            Todavia no
-          </button>
-        </div>
-        {response && <div className={styles.response}>{response}</div>}
-        <p className={styles.note}>
-          Cualquier respuesta es bienvenida. Lo importante es seguir sumando momentos lindos.
-        </p>
+
+        <article className={styles.messageBlock}>
+          <p className={styles.messageText}>{closingMessage}</p>
+        </article>
       </div>
-      <Pebble
-        id="pebble-7"
-        message="La ultima piedrita es tuya"
-        className={styles.pebbleSeven}
-      />
-    </section>
+    </footer>
   )
 }

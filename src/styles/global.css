@@ -24,12 +24,15 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
+  overflow-x: hidden;
+  min-height: 100%;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100svh;
   font-family: 'Poppins', system-ui, sans-serif;
   color: var(--text);
   background:
@@ -38,7 +41,10 @@ body {
     radial-gradient(circle at 80% 20%, rgba(244, 114, 182, 0.2), transparent 45%),
     linear-gradient(180deg, #0B1020 0%, #0A0F1C 40%, #0C1424 100%);
   position: relative;
+  overflow-y: auto;
   overflow-x: hidden;
+  overflow-anchor: none;
+  overscroll-behavior-y: contain;
 }
 
 body::before,
@@ -71,6 +77,32 @@ body::after {
   position: relative;
   z-index: 2;
   isolation: isolate;
+}
+
+.app-shell {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 520ms ease, transform 520ms ease;
+}
+
+.app-shell-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.boot-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 520ms ease, visibility 520ms ease;
+}
+
+.boot-overlay-exit {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 a {
@@ -111,6 +143,13 @@ button {
 
 .app {
   position: relative;
+  overflow-x: hidden;
+  overflow-anchor: none;
+}
+
+.app > footer:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .app::before {
@@ -231,9 +270,29 @@ button {
   border: 0;
 }
 
+body[data-energy-save='true']::before,
+body[data-energy-save='true']::after,
+body[data-energy-save='true'] .app::before,
+body[data-energy-save='true'] .section {
+  animation: none !important;
+}
+
+body[data-energy-save='true']::before {
+  opacity: 0.16;
+}
+
+body[data-energy-save='true']::after {
+  opacity: 0.22;
+}
+
+body[data-energy-save='true'] .btn,
+body[data-energy-save='true'] .reveal {
+  transition: none;
+}
+
 @media (max-width: 720px) {
   .section {
-    padding: 72px 0;
+    padding: 64px 0;
   }
 
   .section-header {

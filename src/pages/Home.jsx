@@ -1,21 +1,13 @@
 import ImmersiveGallery from '../components/ImmersiveGallery'
 import Landing from '../components/Landing'
 import Letter from '../components/Letter'
-import Music from '../components/Music'
-import PebbleGame from '../components/PebbleGame'
-import Timeline from '../components/Timeline'
-import Footer from '../components/Footer'
 
-export default function Home() {
+export default function Home({ energySaver = false }) {
   return (
     <>
-      <Landing />
-      <ImmersiveGallery />
-      <Timeline />
-      <PebbleGame />
-      <Music />
+      <Landing energySaver={energySaver} />
+      <ImmersiveGallery energySaver={energySaver} />
       <Letter />
-      <Footer />
     </>
   )
 }

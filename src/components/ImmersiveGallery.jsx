@@ -1,27 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import Lightbox from './Lightbox'
-import Pebble from './Pebble'
+﻿import { useEffect, useMemo, useRef, useState } from 'react'
 import styles from './ImmersiveGallery.module.css'
-
-const apiBase = import.meta.env.VITE_API_BASE_URL ?? ''
-const pageSize = 80
-const maxPages = 8
+import { usePhotoCatalog } from '../hooks/usePhotoCatalog'
 
 const chunk = (list, size) => {
   const rows = []
   for (let index = 0; index < list.length; index += size) rows.push(list.slice(index, index + size))
   return rows
-}
-
-const uniqueById = (list) => {
-  const seen = new Set()
-  const result = []
-  for (const item of list) {
-    if (seen.has(item.id)) continue
-    seen.add(item.id)
-    result.push(item)
-  }
-  return result
 }
 
 const interleaveByCategory = (photos) => {
@@ -51,11 +35,7 @@ const interleaveByCategory = (photos) => {
 
 const createHeartPoint = (t, scale) => {
   const x = 16 * Math.sin(t) ** 3
-  const y =
-    13 * Math.cos(t) -
-    5 * Math.cos(2 * t) -
-    2 * Math.cos(3 * t) -
-    Math.cos(4 * t)
+  const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)
 
   return {
     x: x * 17 * scale,
@@ -102,96 +82,61 @@ const buildHeartPoints = (count) => {
 }
 
 const buildScenes = (photos) => {
-  const mosaic = photos.slice(0, Math.min(24, photos.length))
-  const ribbons = chunk(photos, 14).filter((row) => row.length > 0)
-  const orbitStart = Math.floor(photos.length * 0.22)
-  const orbit = photos.slice(orbitStart, orbitStart + Math.min(16, photos.length))
-  const heart = photos
+  if (photos.length === 0) {
+    return { mosaic: [], ribbons: [], orbit: [], heart: [] }
+  }
+
+  // Ensure every uploaded photo appears at least once in the living mosaic.
+  const mosaic = [...photos]
+
+  const ribbonPoolSize = Math.min(112, photos.length)
+  const ribbons = chunk(photos.slice(0, ribbonPoolSize), 14).filter((row) => row.length > 0)
+
+  const orbit = photos.slice(0, Math.min(14, photos.length))
+
+  const heartTarget = Math.min(64, Math.max(22, Math.round(photos.length * 0.28)))
+  const heart = photos.slice(0, heartTarget)
 
   return {
-    mosaic: mosaic.length > 0 ? mosaic : photos.slice(0, Math.min(12, photos.length)),
-    ribbons:
-      ribbons.length > 0
-        ? ribbons
-        : chunk(photos.slice(0, Math.min(24, photos.length)), 8).filter((row) => row.length > 0),
-    orbit: orbit.length > 0 ? orbit : photos.slice(0, Math.min(10, photos.length)),
-    heart: heart.length > 0 ? heart : photos.slice(0, Math.min(14, photos.length))
+    mosaic,
+    ribbons,
+    orbit,
+    heart
   }
 }
 
-export default function ImmersiveGallery() {
-  const [items, setItems] = useState([])
-  const [selectedPhoto, setSelectedPhoto] = useState(null)
+export default function ImmersiveGallery({ energySaver = false }) {
+  const { photos, error } = usePhotoCatalog()
   const [activeIndex, setActiveIndex] = useState(0)
-  const [error, setError] = useState('')
   const [ribbonShift, setRibbonShift] = useState([])
   const ribbonViewportRefs = useRef([])
   const ribbonTrackRefs = useRef([])
 
-  useEffect(() => {
-    let cancelled = false
-
-    const loadPhotos = async () => {
-      try {
-        let cursor = 0
-        let page = 0
-        const merged = []
-
-        while (page < maxPages) {
-          const query = new URLSearchParams({
-            collection: 'all',
-            limit: String(pageSize),
-            cursor: String(cursor)
-          })
-
-          const response = await fetch(`${apiBase}/api/photos?${query.toString()}`)
-          if (!response.ok) throw new Error('No se pudo cargar la experiencia inmersiva.')
-
-          const payload = await response.json()
-          const received = Array.isArray(payload.items) ? payload.items : []
-
-          if (received.length === 0) break
-          merged.push(...received)
-
-          if (payload.nextCursor === null || payload.nextCursor === undefined) break
-          if (Number(payload.nextCursor) === cursor) break
-
-          cursor = Number(payload.nextCursor)
-          page += 1
-        }
-
-        if (cancelled) return
-        const arranged = interleaveByCategory(uniqueById(merged))
-        setItems(arranged)
-        setError('')
-      } catch {
-        if (!cancelled) setError('No se pudo cargar la experiencia inmersiva.')
-      }
-    }
-
-    loadPhotos()
-    return () => {
-      cancelled = true
-    }
-  }, [])
+  const lowMotion = energySaver
+  const items = useMemo(() => interleaveByCategory(photos), [photos])
+  const { mosaic, ribbons, orbit, heart } = useMemo(() => buildScenes(items), [items])
+  const displayRibbons = ribbons
+  const displayOrbit = orbit
+  const displayHeart = heart
 
   useEffect(() => {
-    if (items.length === 0) return undefined
+    if (items.length === 0 || lowMotion) return undefined
 
     const id = window.setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % items.length)
     }, 2600)
 
     return () => window.clearInterval(id)
-  }, [items])
+  }, [items, lowMotion])
 
-  const { mosaic, ribbons, orbit, heart } = useMemo(() => buildScenes(items), [items])
-  const heartPoints = useMemo(() => buildHeartPoints(heart.length), [heart.length])
+  const heartPoints = useMemo(() => buildHeartPoints(displayHeart.length), [displayHeart.length])
   const spotlight = items[activeIndex] ?? items[0] ?? null
 
   useEffect(() => {
+    if (lowMotion) return () => {}
+
     const updateRibbonShift = () => {
-      const next = ribbons.map((_, index) => {
+      const next = displayRibbons.map((_, index) => {
         const viewport = ribbonViewportRefs.current[index]
         const track = ribbonTrackRefs.current[index]
         if (!viewport || !track) return 0
@@ -203,24 +148,21 @@ export default function ImmersiveGallery() {
     updateRibbonShift()
     window.addEventListener('resize', updateRibbonShift)
     return () => window.removeEventListener('resize', updateRibbonShift)
-  }, [ribbons])
+  }, [displayRibbons, lowMotion])
 
   return (
-    <section id="experiencia" className={styles.wrap}>
+    <section id="experiencia" className={`${styles.wrap} ${energySaver ? styles.energySave : ''}`}>
       <header className={`section-inner ${styles.header}`}>
         <span className="pill">Experiencia inmersiva</span>
-        <h2>Todas las fotos vivas en una experiencia romantica que no se detiene</h2>
-        <p>
-          Fondo en movimiento constante por toda la pagina, mosaicos con mas variedad y un corazon
-          gigante que late con todos los recuerdos.
-        </p>
-        <span className={styles.counter}>{items.length} fotos cargadas</span>
+        <h2>Mosaico vivo de recuerdos</h2>
+        <p>Las fotos aparecen completas y cada una se muestra al menos una vez.</p>
+        <p>Desliza para ver carruseles, órbita y corazón.</p>
         <div className={styles.actions}>
           <a className="btn" href="#experiencia-carrusel">
             Ver carrusel vivo
           </a>
-          <a className="btn ghost" href="#recuerdos">
-            Ir a recuerdos
+          <a className="btn ghost" href="#carta">
+            Ir a invitación
           </a>
         </div>
       </header>
@@ -230,31 +172,24 @@ export default function ImmersiveGallery() {
           <h3>Mosaico vivo</h3>
           <div className={styles.mosaicGrid}>
             {mosaic.map((photo, index) => (
-              <button
-                key={photo.id}
-                type="button"
-                className={styles.mosaicCard}
-                style={{ '--delay': `${index * 70}ms` }}
-                onClick={() => setSelectedPhoto(photo)}
-                aria-label={`Abrir ${photo.title ?? photo.alt}`}
-              >
-                <img src={photo.src} alt={photo.alt} loading="lazy" />
-                <span>{photo.title ?? photo.alt}</span>
-              </button>
+              <article key={photo.id} className={styles.mosaicCard} style={{ '--delay': `${index * 70}ms` }}>
+                <img
+                  src={photo.src}
+                  alt=""
+                  loading={index < 16 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section
-        id="experiencia-carrusel"
-        className={styles.sceneTwo}
-        aria-label="Carruseles de fotos en movimiento"
-      >
+      <section id="experiencia-carrusel" className={styles.sceneTwo} aria-label="Carruseles de fotos en movimiento">
         <h3 className="sr-only">Carruseles sin repeticion</h3>
-        {ribbons.map((row, rowIndex) => {
+        {displayRibbons.map((row, rowIndex) => {
           const shift = ribbonShift[rowIndex] ?? 0
-          const staticRow = shift < 12
+          const staticRow = lowMotion || shift < 12
 
           return (
             <div
@@ -275,15 +210,9 @@ export default function ImmersiveGallery() {
                 }}
               >
                 {row.map((photo) => (
-                  <button
-                    key={photo.id}
-                    type="button"
-                    className={styles.ribbonCard}
-                    onClick={() => setSelectedPhoto(photo)}
-                    aria-label={`Abrir ${photo.title ?? photo.alt}`}
-                  >
-                    <img src={photo.src} alt={photo.alt} loading="lazy" />
-                  </button>
+                  <article key={photo.id} className={styles.ribbonCard}>
+                    <img src={photo.src} alt="" loading="lazy" decoding="async" />
+                  </article>
                 ))}
               </div>
             </div>
@@ -294,18 +223,12 @@ export default function ImmersiveGallery() {
       <section className={styles.sceneThree} aria-label="Orbita de recuerdos">
         <div className={`section-inner ${styles.sceneInnerThree}`}>
           <div className={styles.spotlightBox}>
-            <h3>Orbita romantica</h3>
-            <p>Foto protagonista cambiante con una orbita de recuerdos alrededor.</p>
+            <h3>Fotos orbitantes</h3>
+            <p>Un foco principal con recuerdos girando alrededor.</p>
             {spotlight ? (
-              <button
-                type="button"
-                className={styles.spotlightCard}
-                onClick={() => setSelectedPhoto(spotlight)}
-                aria-label={`Abrir ${spotlight.title ?? spotlight.alt}`}
-              >
-                <img src={spotlight.src} alt={spotlight.alt} loading="lazy" />
-                <span>{spotlight.title ?? spotlight.alt}</span>
-              </button>
+              <div className={styles.spotlightCard}>
+                <img src={spotlight.src} alt="" loading="lazy" decoding="async" />
+              </div>
             ) : (
               <div className={styles.placeholder}>Cargando fotos...</div>
             )}
@@ -313,19 +236,12 @@ export default function ImmersiveGallery() {
 
           <div className={styles.orbitShell} aria-hidden="true">
             <div className={styles.orbitRing}>
-              {orbit.map((photo, index) => {
-                const angle = (360 / Math.max(orbit.length, 1)) * index
+              {displayOrbit.map((photo, index) => {
+                const angle = (360 / Math.max(displayOrbit.length, 1)) * index
                 return (
-                  <button
-                    key={`orbit-${photo.id}`}
-                    type="button"
-                    className={styles.orbitThumb}
-                    style={{ '--angle': `${angle}deg` }}
-                    onClick={() => setSelectedPhoto(photo)}
-                    aria-label={`Abrir ${photo.title ?? photo.alt}`}
-                  >
-                    <img src={photo.src} alt={photo.alt} loading="lazy" />
-                  </button>
+                  <div key={`orbit-${photo.id}`} className={styles.orbitThumb} style={{ '--angle': `${angle}deg` }}>
+                    <img src={photo.src} alt="" loading="lazy" decoding="async" />
+                  </div>
                 )
               })}
             </div>
@@ -335,18 +251,16 @@ export default function ImmersiveGallery() {
 
       <section className={styles.sceneFour} aria-label="Constelacion de fotos en forma de corazon">
         <div className={`section-inner ${styles.sceneInnerHeart}`}>
-          <h3>Corazon gigante en movimiento</h3>
-          <p>Todos los recuerdos laten juntos en una constelacion romantica mas grande y visible.</p>
+          <h3>Un corazón construido por nuestros recuerdos</h3>
           <span className={styles.heartCount}>{heart.length} recuerdos latiendo al mismo tiempo</span>
           <div className={styles.heartStage}>
             <div className={styles.heartGlow} />
             <div className={styles.heartHalo} />
-            {heart.map((photo, index) => {
+            {displayHeart.map((photo, index) => {
               const point = heartPoints[index] ?? { x: 0, y: 0, layer: 0, floatX: 0, floatY: 0, size: 84 }
               return (
-                <button
+                <div
                   key={`heart-${photo.id}`}
-                  type="button"
                   className={styles.heartNode}
                   style={{
                     '--tx': `${point.x}px`,
@@ -358,11 +272,9 @@ export default function ImmersiveGallery() {
                     '--duration': `${4.2 + point.layer * 0.8 + (index % 5) * 0.35}s`,
                     '--tilt': `${index % 2 === 0 ? -6 : 6}deg`
                   }}
-                  onClick={() => setSelectedPhoto(photo)}
-                  aria-label={`Abrir ${photo.title ?? photo.alt}`}
                 >
-                  <img src={photo.src} alt={photo.alt} loading="lazy" />
-                </button>
+                  <img src={photo.src} alt="" loading="lazy" decoding="async" />
+                </div>
               )
             })}
           </div>
@@ -374,19 +286,6 @@ export default function ImmersiveGallery() {
           {error}
         </div>
       )}
-
-      <Pebble
-        id="pebble-2"
-        message="Piedrita escondida entre las luces"
-        className={styles.pebbleTwo}
-      />
-      <Pebble
-        id="pebble-3"
-        message="Otra piedrita encontrada"
-        className={styles.pebbleThree}
-      />
-
-      <Lightbox photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
     </section>
   )
 }
