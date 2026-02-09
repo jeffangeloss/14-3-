@@ -1,4 +1,4 @@
-﻿import styles from './Letter.module.css'
+import styles from './Letter.module.css'
 
 const closingMessage = `PRECIOSA GABY, QUIERES SER MI SAN VALENTÍN? ¿Te gustaría que este 14 sea nuestro? 🌙💗
 Podríamos salir juntitos este 14 de febrero si es que puedes :')

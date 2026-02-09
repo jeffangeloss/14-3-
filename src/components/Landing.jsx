@@ -1,4 +1,4 @@
-﻿import { useMemo } from 'react'
+import { useMemo } from 'react'
 import styles from './Landing.module.css'
 import { usePhotoCatalog } from '../hooks/usePhotoCatalog'
 
